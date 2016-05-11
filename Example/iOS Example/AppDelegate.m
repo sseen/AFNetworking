@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "AppDelegate.h"
-@import AFNetworking;
+#import <AFNetworking/AFNetworking.h>
 
 #import "GlobalTimelineViewController.h"
 

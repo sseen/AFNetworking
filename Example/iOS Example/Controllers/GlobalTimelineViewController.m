@@ -26,7 +26,8 @@
 
 #import "PostTableViewCell.h"
 
-@import AFNetworking;
+//@import AFNetworking;
+#import <AFNetworking/AFNetworking.h>
 
 @interface GlobalTimelineViewController ()
 @property (readwrite, nonatomic, strong) NSArray *posts;
@@ -51,6 +52,27 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSString *urlString =[NSString stringWithFormat:@"http://192.168.0.105:8081/zftal-mobile/servlet/LoginTextServlet"];
+    urlString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *jsonString = @"{\"username\":1211,\"password\":\"xu4322146zhang12\"}";
+    
+    // And finally, add it to HTTP body and job done.
+    //[request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
+    
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSMutableURLRequest *req = [[AFJSONRequestSerializer serializer] requestWithMethod:@"POST" URLString:urlString parameters:nil error:nil];
+    
+    req.timeoutInterval= [[[NSUserDefaults standardUserDefaults] valueForKey:@"timeoutInterval"] longValue];
+    [req setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [req setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [req setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [[manager dataTaskWithRequest:req completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        
+    }] resume];
+    
     
     self.title = NSLocalizedString(@"AFNetworking", nil);
 
